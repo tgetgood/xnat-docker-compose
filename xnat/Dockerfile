@@ -1,7 +1,7 @@
 FROM tomcat:7-jre8-alpine
 MAINTAINER John Flavin <jflavin@wustl.edu>
 
-ARG XNAT_VER
+ARG XNAT_WAR_FILE
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 ARG XNAT_DATASOURCE_DRIVER=org.postgresql.Driver
@@ -17,14 +17,10 @@ ARG SMTP_AUTH
 ARG SMTP_USERNAME
 ARG SMTP_PASSWORD
 
-ADD make-xnat-config.sh /usr/local/bin/make-xnat-config.sh
-ADD wait-for-postgres.sh /usr/local/bin/wait-for-postgres.sh
+COPY make-xnat-config.sh /usr/local/bin/make-xnat-config.sh
+COPY ${XNAT_WAR_FILE} /opt/xnat.war
 
-RUN apk add --no-cache \
-        postgresql-client \
-        wget \
-    && \
-    rm -rf $CATALINA_HOME/webapps/* && \
+RUN rm -rf $CATALINA_HOME/webapps/* && \
     mkdir -p \
         $CATALINA_HOME/webapps/${TOMCAT_XNAT_FOLDER} \
         ${XNAT_HOME}/config \
@@ -38,16 +34,12 @@ RUN apk add --no-cache \
         ${XNAT_ROOT}/pipeline \
         ${XNAT_ROOT}/prearchive \
     && \
-    /usr/local/bin/make-xnat-config.sh && \
-    rm /usr/local/bin/make-xnat-config.sh && \
-    cd $CATALINA_HOME/webapps/ && \
-    wget https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-web/downloads/xnat-web-${XNAT_VER}.war && \
+    cd ${CATALINA_HOME}/webapps/ && \
     cd ${TOMCAT_XNAT_FOLDER} && \
-    unzip -o ../xnat-web-${XNAT_VER}.war && \
-    rm -f ../xnat-web-${XNAT_VER}.war && \
-    apk del wget
+    unzip -o /opt/xnat.war && \
+    rm -f /opt/xnat.war
 
 EXPOSE 8080
 ENV XNAT_HOME=${XNAT_HOME} XNAT_DATASOURCE_USERNAME=${XNAT_DATASOURCE_USERNAME}
 
-CMD ["wait-for-postgres.sh", "/usr/local/tomcat/bin/catalina.sh", "run"]
+CMD ["make-xnat-config.sh", "/usr/local/tomcat/bin/catalina.sh", "run"]

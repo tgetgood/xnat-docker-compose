@@ -18,9 +18,9 @@ EOF
 cat > $XNAT_HOME/config/prefs-init.ini << EOF
 [siteConfig]
 
-siteId=XNAT
+siteId=$XNAT_SITE_ID
 siteUrl=http://localhost
-adminEmail=fake@fake.fake
+adminEmail=$XNAT_ADMIN_EMAIL
 
 archivePath=/data/xnat/archive
 prearchivePath=/data/xnat/prearchive

@@ -1,8 +1,9 @@
 #!/bin/sh
 
+set -e
+
 # generate xnat config
-if [ ! -f $XNAT_HOME/config/xnat-conf.properties ]; then
-  cat > $XNAT_HOME/config/xnat-conf.properties << EOF
+cat > $XNAT_HOME/config/xnat-conf.properties << EOF
 datasource.driver=$XNAT_DATASOURCE_DRIVER
 datasource.url=$XNAT_DATASOURCE_URL
 datasource.username=$XNAT_DATASOURCE_USERNAME
@@ -13,10 +14,8 @@ hibernate.show_sql=false
 hibernate.cache.use_second_level_cache=true
 hibernate.cache.use_query_cache=true
 EOF
-fi
 
-if [ ! -f $XNAT_HOME/config/prefs-init.ini ]; then
-  cat > $XNAT_HOME/config/prefs-init.ini << EOF
+cat > $XNAT_HOME/config/prefs-init.ini << EOF
 [siteConfig]
 
 siteId=XNAT
@@ -50,5 +49,5 @@ smtpSslTrust=
 emailPrefix=XNAT
 
 EOF
-fi
 
+exec "$@"

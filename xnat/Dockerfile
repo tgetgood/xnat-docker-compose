@@ -1,24 +1,9 @@
 FROM tomcat:7-jre8-alpine
 MAINTAINER John Flavin <jflavin@wustl.edu>
 
-ARG XNAT_WAR_FILE
+ARG XNAT_WAR_FILE=xnat-web-1.7.5.3.war
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
-ARG XNAT_DATASOURCE_DRIVER=org.postgresql.Driver
-ARG XNAT_DATASOURCE_URL=jdbc:postgresql://xnat-db/xnat
-ARG XNAT_DATASOURCE_USERNAME=xnat
-ARG XNAT_DATASOURCE_PASSWORD=xnat
-ARG XNAT_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQL9Dialect
-ARG TOMCAT_XNAT_FOLDER=ROOT
-ARG SMTP_ENABLED=false
-ARG SMTP_HOSTNAME=fake.fake
-ARG SMTP_PORT
-ARG SMTP_AUTH
-ARG SMTP_USERNAME
-ARG SMTP_PASSWORD
-
-COPY make-xnat-config.sh /usr/local/bin/make-xnat-config.sh
-COPY ${XNAT_WAR_FILE} /opt/xnat.war
 
 RUN rm -rf $CATALINA_HOME/webapps/* && \
     mkdir -p \
@@ -32,12 +17,18 @@ RUN rm -rf $CATALINA_HOME/webapps/* && \
         ${XNAT_ROOT}/cache \
         ${XNAT_ROOT}/ftp \
         ${XNAT_ROOT}/pipeline \
-        ${XNAT_ROOT}/prearchive \
-    && \
-    cd ${CATALINA_HOME}/webapps/ && \
-    cd ${TOMCAT_XNAT_FOLDER} && \
-    unzip -o /opt/xnat.war && \
-    rm -f /opt/xnat.war
+        ${XNAT_ROOT}/prearchive 
+
+ADD ${XNAT_WAR_FILE} ${CATALINA_HOME}/webapps/${TOMCAT_XNAT_FOLDER}
+
+run cd ${CATALINA_HOME}/webapps/${TOMCAT_XNAT_FOLDER} && \
+    unzip -o ${XNAT_WAR_FILE} && \
+		rm ${XNAT_WAR_FILE}
+
+COPY make-xnat-config.sh /usr/local/bin/make-xnat-config.sh
+COPY wait-for-postgres.sh /usr/local/bin/wait-for-postgres.sh
+
+RUN apk add --no-cache postgresql-client
 
 EXPOSE 8080
 ENV XNAT_HOME=${XNAT_HOME} XNAT_DATASOURCE_USERNAME=${XNAT_DATASOURCE_USERNAME}

@@ -8,18 +8,7 @@ ARG TOMCAT_XNAT_FOLDER=ROOT
 ADD make-xnat-config.sh /usr/local/bin/make-xnat-config.sh
 
 RUN rm -rf $CATALINA_HOME/webapps/* && \
-    mkdir -p \
-        $CATALINA_HOME/webapps/${TOMCAT_XNAT_FOLDER} \
-        ${XNAT_HOME}/config \
-        ${XNAT_HOME}/logs \
-        ${XNAT_HOME}/plugins \
-        ${XNAT_HOME}/work \
-        ${XNAT_ROOT}/archive \
-        ${XNAT_ROOT}/build \
-        ${XNAT_ROOT}/cache \
-        ${XNAT_ROOT}/ftp \
-        ${XNAT_ROOT}/pipeline \
-        ${XNAT_ROOT}/prearchive 
+    mkdir -p $CATALINA_HOME/webapps/${TOMCAT_XNAT_FOLDER} 
 
 ADD xnat-web-1.7.5.3.war $CATALINA_HOME/webapps/${TOMCAT_XNAT_FOLDER}/xnat-web.war
 
@@ -30,6 +19,6 @@ RUN cd $CATALINA_HOME/webapps/ && \
 
 
 EXPOSE 8080
-ENV XNAT_HOME=${XNAT_HOME} XNAT_DATASOURCE_USERNAME=${XNAT_DATASOURCE_USERNAME}
+ENV XNAT_HOME=${XNAT_HOME}
 
 CMD ["make-xnat-config.sh", "/usr/local/tomcat/bin/catalina.sh", "run"]

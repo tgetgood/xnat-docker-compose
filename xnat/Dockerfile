@@ -17,8 +17,7 @@ RUN cd $CATALINA_HOME/webapps/ && \
     unzip -o xnat-web.war && \
     rm -f xnat-web.war 
 
-
 EXPOSE 8080
-ENV XNAT_HOME=${XNAT_HOME}
+ENV XNAT_HOME=${XNAT_HOME} XNAT_ROOT=${XNAT_ROOT}
 
 CMD ["make-xnat-config.sh", "/usr/local/tomcat/bin/catalina.sh", "run"]

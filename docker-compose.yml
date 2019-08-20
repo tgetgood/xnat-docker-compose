@@ -8,7 +8,7 @@ services:
         XNAT_ROOT: /data/xnat
         XNAT_HOME: /data/xnat/home
     ports:
-      - "8081:8080"
+      - "8080:8080"
       - "8000:8000"
     volumes:
       - ./xnat-data/home/logs:/data/xnat/home/logs
@@ -41,14 +41,14 @@ services:
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
 
-  xnat-nginx:
-    build: ./nginx
-    ports:
-      - "80:80"
-    expose:
-      - "80"
-    links:
-      - xnat-web
+  # xnat-nginx:
+  #   build: ./nginx
+  #   ports:
+  #     - "80:80"
+  #   expose:
+  #     - "80"
+  #   links:
+  #     - xnat-web
 
   # prometheus:
   #   image: prom/prometheus

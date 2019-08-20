@@ -2,6 +2,18 @@
 
 set -e
 
+mkdir -p \
+        $XNAT_HOME/config \
+        $XNAT_HOME/logs \
+        $XNAT_HOME/plugins \
+        $XNAT_HOME/work \
+        $XNAT_ROOT/archive \
+        $XNAT_ROOT/build \
+        $XNAT_ROOT/cache \
+        $XNAT_ROOT/ftp \
+        $XNAT_ROOT/pipeline \
+        $XNAT_ROOT/prearchive 
+
 # generate xnat config
 cat > $XNAT_HOME/config/xnat-conf.properties << EOF
 datasource.driver=$XNAT_DATASOURCE_DRIVER
@@ -19,7 +31,7 @@ cat > $XNAT_HOME/config/prefs-init.ini << EOF
 [siteConfig]
 
 siteId=$XNAT_SITE_ID
-siteUrl=http://localhost
+siteUrl=$XNAT_SITE_URL
 adminEmail=$XNAT_ADMIN_EMAIL
 
 archivePath=/data/xnat/archive
@@ -46,7 +58,7 @@ smtpUsername=${SMTP_USERNAME}
 smtpPassword=${SMTP_PASSWORD}
 smtpStartTls=false
 smtpSslTrust=
-emailPrefix=XNAT
+emailPrefix=$EMAIL_PREFIX
 
 EOF
 

@@ -2,18 +2,6 @@
 
 set -e
 
-mkdir -p \
-        $XNAT_HOME/config \
-        $XNAT_HOME/logs \
-        $XNAT_HOME/plugins \
-        $XNAT_HOME/work \
-        $XNAT_ROOT/archive \
-        $XNAT_ROOT/build \
-        $XNAT_ROOT/cache \
-        $XNAT_ROOT/ftp \
-        $XNAT_ROOT/pipeline \
-        $XNAT_ROOT/prearchive 
-
 # generate xnat config
 cat > $XNAT_HOME/config/xnat-conf.properties << EOF
 datasource.driver=$XNAT_DATASOURCE_DRIVER
@@ -56,7 +44,7 @@ smtpProtocol=${SMTP_PROTOCOL}
 smtpAuth=${SMTP_AUTH}
 smtpUsername=${SMTP_USERNAME}
 smtpPassword=${SMTP_PASSWORD}
-smtpStartTls=false
+smtpStartTls=true
 smtpSslTrust=
 emailPrefix=$EMAIL_PREFIX
 

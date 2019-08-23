@@ -19,20 +19,14 @@ services:
     depends_on:
       - xnat-db
     environment:
-      - CATALINA_OPTS=-Xms128m -Xmx1024m -Dxnat.home=/data/xnat/home -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
-      - XNAT_SITE_ID="MUHC-MR-core-lab"
+      - CATALINA_OPTS=-Xms128m -Xmx1536m -Dxnat.home=/data/xnat/home -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
+      - XNAT_SITE_ID="MUHC"
       - XNAT_ADMIN_EMAIL="me@example.com"
       - XNAT_DATASOURCE_DRIVER=org.postgresql.Driver
       - XNAT_DATASOURCE_URL=jdbc:postgresql://xnat-db/xnat
       - XNAT_DATASOURCE_USERNAME=xnat
       - XNAT_DATASOURCE_PASSWORD=xnat
       - XNAT_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQL9Dialect
-      - SMTP_ENABLED=false
-      - SMTP_HOSTNAME=fake.fake
-      - SMTP_PORT
-      - SMTP_AUTH
-      - SMTP_USERNAME
-      - SMTP_PASSWORD
 
   xnat-db:
     build: ./postgres

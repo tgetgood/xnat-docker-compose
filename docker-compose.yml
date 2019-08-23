@@ -12,7 +12,6 @@ services:
       - "8000:8000"
     volumes:
       - ./xnat-data/home/logs:/data/xnat/home/logs
-      - ./xnat-data/home/plugins:/data/xnat/home/plugins
       - ./xnat-data/archive:/data/xnat/archive
       - ./xnat-data/build:/data/xnat/build
       - /var/run/docker.sock:/var/run/docker.sock

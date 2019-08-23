@@ -1,5 +1,4 @@
 FROM tomcat:7-jre8-alpine
-MAINTAINER John Flavin <jflavin@wustl.edu>
 
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
@@ -28,7 +27,7 @@ RUN mkdir -p \
 
 ADD make-xnat-config.sh /usr/local/bin/make-xnat-config.sh
 
-ADD plugins 
+ADD plugins ${XNAT_HOME}/plugins
 
 EXPOSE 8080
 ENV XNAT_HOME=${XNAT_HOME} XNAT_ROOT=${XNAT_ROOT}
